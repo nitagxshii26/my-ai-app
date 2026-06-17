@@ -27,7 +27,7 @@ export default async function handler(req) {
         Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "openai/gpt-4o-mini",
+        model: "nvidia/nemotron-3-ultra-550b-a55b:free",
         messages: [{ role: "user", content: question }],
         stream: false,
         max_tokens: 256,
