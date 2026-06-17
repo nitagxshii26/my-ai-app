@@ -2,9 +2,9 @@
 // Proxies requests to OpenRouter. API key lives in Vercel env vars only.
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = "nvidia/llama-3.1-nemotron-ultra-253b-v1:free";
+const MODEL = "nvidia/nemotron-3-ultra-550b-a55b:free";
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Only allow POST
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -30,6 +30,8 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
+      const errText = await response.text();
+      console.error("OpenRouter error:", response.status, errText);
       return res.status(response.status).json({ error: "Upstream API error" });
     }
 
@@ -45,4 +47,4 @@ export default async function handler(req, res) {
     console.error("OpenRouter error:", error);
     return res.status(500).json({ error: "Something went wrong" });
   }
-}
+};
