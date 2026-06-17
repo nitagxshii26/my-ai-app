@@ -27,14 +27,15 @@ export default async function handler(req) {
         Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "nvidia/nemotron-3-ultra-550b-a55b:free",
+        model: "google/gemma-2-9b-it:free",
         messages: [{ role: "user", content: question }],
-        stream: false,
-        max_tokens: 256,
+        max_tokens: 200,
       }),
     });
 
     if (!resp.ok) {
+      const errText = await resp.text();
+      console.error("OpenRouter error:", resp.status, errText);
       return json(502, { error: "Something went wrong, please try again." });
     }
 
